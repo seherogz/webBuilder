@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using WebBuilder.Models;
 using WebBuilder.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebBuilder.Controllers
 {
@@ -15,11 +16,27 @@ namespace WebBuilder.Controllers
     {
         private readonly WebBuilderContext _context;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<AuthController> _logger;
 
-        public AuthController(WebBuilderContext context, IConfiguration configuration)
+        public AuthController(WebBuilderContext context, IConfiguration configuration, ILogger<AuthController> logger)
         {
             _context = context;
             _configuration = configuration;
+            _logger = logger;
+        }
+
+        [HttpPost("track/login-page-visit")]
+        public IActionResult TrackLoginPageVisit([FromBody] PageVisitDto dto)
+        {
+            _logger.LogInformation($"Login page visited. Source: {dto.Source}, Timestamp: {DateTime.UtcNow}");
+            return Ok(new { message = "Visit tracked successfully" });
+        }
+
+        [HttpPost("track/register-page-visit")]
+        public IActionResult TrackRegisterPageVisit([FromBody] PageVisitDto dto)
+        {
+            _logger.LogInformation($"Register page visited. Source: {dto.Source}, Timestamp: {DateTime.UtcNow}");
+            return Ok(new { message = "Visit tracked successfully" });
         }
 
         [HttpPost("register")]
@@ -60,6 +77,15 @@ namespace WebBuilder.Controllers
             return Ok(new { token, user.Id, user.Name, user.Email });
         }
 
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            _logger.LogInformation($"User {userId} logged out at {DateTime.UtcNow}");
+            return Ok(new { message = "Successfully logged out" });
+        }
+
         private string GenerateJwtToken(User user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -94,5 +120,10 @@ namespace WebBuilder.Controllers
     {
         public string Email { get; set; }
         public string Password { get; set; }
+    }
+
+    public class PageVisitDto
+    {
+        public string Source { get; set; } = "home";
     }
 } 
