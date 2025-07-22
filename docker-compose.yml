@@ -1,0 +1,56 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: webbuilder-backend
+    ports:
+      - "5001:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=webbuilder;User Id=admin;Password=your_password_here
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - webbuilder-network
+
+  postgres:
+    image: postgres:latest
+    container_name: webbuilder-db
+    environment:
+      POSTGRES_DB: webbuilder
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: your_password_here
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - webbuilder-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d webbuilder"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: webbuilder-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@webbuilder.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - webbuilder-network
+
+networks:
+  webbuilder-network:
+    driver: bridge
+
+volumes:
+  postgres_data: 
