@@ -86,6 +86,21 @@ namespace WebBuilder.Controllers
             return Ok(new { message = "Successfully logged out" });
         }
 
+        [Authorize]
+        [HttpGet("users")]
+        public async Task<ActionResult<IEnumerable<object>>> GetAllUsers()
+        {
+            var users = await _context.Users
+                .Select(u => new {
+                    u.Id,
+                    u.Name,
+                    u.Email,
+                    u.CreatedAt
+                })
+                .ToListAsync();
+            return Ok(users);
+        }
+
         private string GenerateJwtToken(User user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
