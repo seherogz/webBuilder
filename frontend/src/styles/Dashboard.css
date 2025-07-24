@@ -400,6 +400,79 @@
   transform: scale(1.1);
 }
 
+/* Settings Page Styles */
+.settings-section-title {
+  color: var(--color1);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 2rem 0 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color5);
+}
+
+.form-label {
+  color: var(--color1);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.form-control, .form-select {
+  border: 1px solid var(--color5);
+  border-radius: 4px;
+  padding: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--color3);
+  box-shadow: 0 0 0 0.2rem rgba(189, 88, 103, 0.25);
+}
+
+.form-control::placeholder {
+  color: #999;
+}
+
+.form-check-label {
+  color: var(--color1);
+}
+
+.vintage-button {
+  background: var(--color3);
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 2rem;
+}
+
+.vintage-button:hover {
+  background: var(--color2);
+}
+
+.vintage-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+textarea.form-control {
+  min-height: 100px;
+}
+
+/* Color picker input styling */
+input[type="color"] {
+  height: 40px;
+  padding: 2px;
+}
+
+/* File input styling */
+input[type="file"] {
+  padding: 0.5rem;
+  background: var(--light-gray);
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .sidebar {

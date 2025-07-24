@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Dashboard.css';
 
@@ -12,7 +12,7 @@ const menuItems = [
   { id: 'hotels', icon: '🏨', label: 'Otellerim', path: '/dashboard?tab=hotels' },
   { id: 'users', icon: '👥', label: 'Kullanıcılar', path: '/users' },
   { id: 'templates', icon: '🎨', label: 'Şablonlar', path: '/dashboard?tab=templates' },
-  { id: 'settings', icon: '⚙️', label: 'Genel Ayarlar', path: '/dashboard?tab=settings' },
+  { id: 'settings', icon: '⚙️', label: 'Genel Ayarlar', path: '/settings' },
   { id: 'languages', icon: '🌐', label: 'Dil Seçenekleri', path: '/dashboard?tab=languages' },
   { id: 'chat', icon: '💬', label: 'Chat Ayarları', path: '/dashboard?tab=chat' },
   { id: 'banners', icon: '📱', label: 'Banner Ayarları', path: '/dashboard?tab=banners' },
@@ -26,6 +26,16 @@ const menuItems = [
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation(); // Add this line to get current location
+
+  const isMenuItemActive = (path: string) => {
+    if (path.includes('?')) {
+      // For paths with query parameters
+      return location.pathname + location.search === path;
+    }
+    // For paths without query parameters
+    return location.pathname === path;
+  };
 
   const handleLogout = async () => {
     try {
@@ -84,7 +94,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             {menuItems.map((item) => (
               <div
                 key={item.id}
-                className={`menu-item${window.location.pathname === item.path ? ' active' : ''}`}
+                className={`menu-item${isMenuItemActive(item.path) ? ' active' : ''}`}
                 onClick={() => navigate(item.path)}
               >
                 <span className="menu-icon">{item.icon}</span>
