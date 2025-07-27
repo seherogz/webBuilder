@@ -57,7 +57,6 @@ const Login: React.FC = () => {
     <div className="auth-container">
       <div className="auth-card">
         <h1 className="auth-title">Hoş Geldiniz</h1>
-        <h2 className="auth-subtitle">Vintage tarzında güvenli giriş</h2>
 
         {error && <Alert variant="danger">{error}</Alert>}
 
@@ -121,7 +120,7 @@ const Login: React.FC = () => {
         </Form>
 
         <div className="auth-footer">
-          © 2024 - Güvenli ve şık giriş deneyimi
+          © 2025
         </div>
       </div>
     </div>

@@ -29,14 +29,14 @@ namespace WebBuilder.Controllers
         public IActionResult TrackLoginPageVisit([FromBody] PageVisitDto dto)
         {
             _logger.LogInformation($"Login page visited. Source: {dto.Source}, Timestamp: {DateTime.UtcNow}");
-            return Ok(new { message = "Visit tracked successfully" });
+            return Ok(new { message = "giriş başarılı" });
         }
 
         [HttpPost("track/register-page-visit")]
         public IActionResult TrackRegisterPageVisit([FromBody] PageVisitDto dto)
         {
             _logger.LogInformation($"Register page visited. Source: {dto.Source}, Timestamp: {DateTime.UtcNow}");
-            return Ok(new { message = "Visit tracked successfully" });
+            return Ok(new { message = "giriş başarılı" });
         }
 
         [HttpPost("register")]

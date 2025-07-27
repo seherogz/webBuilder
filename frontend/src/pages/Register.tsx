@@ -156,7 +156,7 @@ const Register: React.FC = () => {
         </Form>
 
         <div className="auth-footer">
-          © 2024 - Güvenli ve şık kayıt deneyimi
+          © 2025
         </div>
       </div>
     </div>
